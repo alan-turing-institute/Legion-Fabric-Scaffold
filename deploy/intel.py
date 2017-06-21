@@ -1,22 +1,15 @@
 from fabric.api import *
 from mako.template import Template
-from contextlib import nested
 import mako
 import time
 import os
 
-env.user='ucgajhe'
+env.user='jamespjh'
 
 env.run_at="/home/"+env.user+"/Scratch/Scaffold/output"
 env.deploy_to="/home/"+env.user+"/devel/mpi-scaffold"
-env.clone_url="https://github.com/UCL-RITS/Legion-Fabric-Scaffold.git"
-env.hosts=['legion.rc.ucl.ac.uk']
-
-modules = nested(
-    prefix('module load cmake'),
-    prefix('module swap compilers compilers/gnu/4.9.2'),
-    prefix('module swap mpi mpi/openmpi/1.10.1/gnu-4.9.2')
-)
+env.clone_url="https://github.com/alan-turing-institute/Turing-Fabric-Scaffold.git"
+env.hosts=['cobra.hpclab.net:2005']
 
 @task
 def cold(branch='master'):
@@ -24,19 +17,19 @@ def cold(branch='master'):
     run('mkdir -p '+env.deploy_to)
     run('mkdir -p '+env.run_at)
     with cd(env.deploy_to):
-        with modules:
+        with path("/home/hut23/install/bin"):
             run('git clone '+env.clone_url)
-            run('mkdir Legion-Fabric-Scaffold/build')
-            with cd('Legion-Fabric-Scaffold/build'):
+            run('mkdir Turing-Fabric-Scaffold/build')
+            with cd('Turing-Fabric-Scaffold/build'):
                 run('git checkout '+branch)
-                run('cmake .. -DCMAKE_CXX_COMPILER=mpiCC -DCMAKE_C_COMPILER=mpicc')
+                run('cmake ..')
                 run('make')
                 run('test/catch')
 
 @task
 def warm(branch='master'):
-  with cd(env.deploy_to+'/Legion-Fabric-Scaffold/build'):
-    with modules:
+  with cd(env.deploy_to+'/Turing-Fabric-Scaffold/build'):
+      with path("/home/hut23/install/bin"):
         run('git checkout '+branch)
         run('git pull')
         run('cmake ..')
@@ -45,10 +38,10 @@ def warm(branch='master'):
 
 @task
 def patch():
-  with cd(env.deploy_to+'/Legion-Fabric-Scaffold'):
+  with cd(env.deploy_to+'/Turing-Fabric-Scaffold'):
     local('git diff > patch.diff')
     put('patch.diff','patch.diff')
-    with modules:
+    with path("/home/hut23/install/bin"):
         run('git checkout .')
         run('git apply patch.diff')
         with cd('build'):
@@ -59,25 +52,25 @@ def patch():
 @task
 def sub(processes=4):
     env.processes=processes
-    template_file_path=os.path.join(os.path.dirname(__file__),'legion.sh.mko')
-    script_local_path=os.path.join(os.path.dirname(__file__),'legion.sh')
+    template_file_path=os.path.join(os.path.dirname(__file__),'intel.sh.mko')
+    script_local_path=os.path.join(os.path.dirname(__file__),'intel.sh')
     with open(template_file_path) as template:
         script=Template(template.read()).render(**env)
-        with open(script_local_path,'w') as script_file:
+        with open(script_local_path,'w',newline='\n') as script_file:
             script_file.write(script)
     with cd(env.deploy_to):
         put(script_local_path,'example.sh')
-        run('qsub example.sh')
+        run('sbatch example.sh')
 
 @task
 def stat():
-    run('qstat')
+    run('squeue')
 
 @task
 def wait():
   """Wait until all jobs currently qsubbed are complete, then return"""
-  while "job-ID" in run('qstat'):
-	time.sleep(10)
+  while "job-ID" in run('squeue'):
+      time.sleep(10)
 
 @task
 def fetch():

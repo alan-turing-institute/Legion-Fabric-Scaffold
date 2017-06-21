@@ -1,1 +1,1 @@
-from deploy import legion
+from deploy import intel
