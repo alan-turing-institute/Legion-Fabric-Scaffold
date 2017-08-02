@@ -11,5 +11,5 @@ env.hosts=['cobra.hpclab.net:2005']
 env.template_file_path=os.path.join(os.path.dirname(__file__),'intel.sh.mko')
 env.script_local_path=os.path.join(os.path.dirname(__file__),'intel.sh')
 
-from ..simple_mpi.simple_mpi import *
+from ..builder.build import *
 from ..slurm.slurm import *

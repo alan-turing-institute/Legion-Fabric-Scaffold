@@ -1,0 +1,4 @@
+cuda_add_executable(cuda_thrust_catch catch.cu)
+cuda_add_executable(cuda_thrust_catch_cuda catch_cuda.cu)
+target_link_libraries(cuda_thrust_catch cuda_thrust_lib)
+target_link_libraries(cuda_thrust_catch_cuda cuda_thrust_lib)

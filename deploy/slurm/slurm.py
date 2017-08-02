@@ -5,7 +5,7 @@ import time
 import os
 
 @task
-def sub(processes=4):
+def sub(processes=4, exec='simple_mpi'):
     env.processes=processes
 
     with open(env.template_file_path) as template:

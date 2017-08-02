@@ -12,7 +12,7 @@ def cold(branch='master'):
             with cd('Turing-Fabric-Scaffold/build'):
                 run('git checkout '+branch)
                 with prefix(env.modules):
-                    run('cmake ../simple_mpi')
+                    run('cmake ..')
                     run('make')
                     run('test/catch')
 
@@ -23,7 +23,7 @@ def warm(branch='master'):
         run('git checkout '+branch)
         run('git pull')
         with prefix(env.modules):
-            run('cmake ../simple_mpi')
+            run('cmake ..')
             run('make')
             run('test/catch')
 
@@ -37,6 +37,6 @@ def patch():
         run('git apply patch.diff')
         with cd('build'):
             with prefix(env.modules):
-                run('cmake ../simple_mpi')
+                run('cmake ..')
                 run('make')
                 run('test/catch')

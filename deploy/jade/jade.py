@@ -15,5 +15,5 @@ env.modules="module load openmpi"
 env.template_file_path=os.path.join(os.path.dirname(__file__),'jade.sh.mko')
 env.script_local_path=os.path.join(os.path.dirname(__file__),'jade.sh')
 
-from ..simple_mpi.simple_mpi import *
+from ..builder.build import *
 from ..slurm.slurm import *

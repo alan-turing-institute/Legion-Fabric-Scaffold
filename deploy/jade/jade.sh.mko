@@ -3,5 +3,5 @@
 #SBATCH --job-name MPIExample
 #SBATCH -N ${processes}
 #SBATCH --workdir ${run_at}
-module load openmpi
-time mpirun -n ${processes} ${deploy_to}/Turing-Fabric-Scaffold/build/src/mpi_example
+${modules}
+time mpirun -n ${processes} ${deploy_to}/Turing-Fabric-Scaffold/build/${exec}/src/${exec}
