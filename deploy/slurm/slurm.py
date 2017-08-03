@@ -5,9 +5,9 @@ import time
 import os
 
 @task
-def sub(processes=4, exec='simple_mpi'):
+def sub(processes=1, to_exec='simple_mpi'):
     env.processes=processes
-
+    env.to_exec=to_exec
     with open(env.template_file_path) as template:
         script=Template(template.read()).render(**env)
         with open(env.script_local_path,'w',newline='\n') as script_file:

@@ -4,4 +4,4 @@
 #SBATCH -N ${processes}
 #SBATCH --workdir ${run_at}
 ${modules}
-time mpirun -n ${processes} ${deploy_to}/Turing-Fabric-Scaffold/build/${exec}/src/${exec}
+time mpirun -n ${processes} ${deploy_to}/Turing-Fabric-Scaffold/build/${to_exec}/src/${to_exec}

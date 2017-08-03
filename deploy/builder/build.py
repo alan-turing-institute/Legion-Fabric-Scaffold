@@ -14,7 +14,8 @@ def cold(branch='master'):
                 with prefix(env.modules):
                     run('cmake ..')
                     run('make')
-                    run('test/catch')
+                    run('simple_mpi/test/catch_simple_mpi')
+                    run('cuda_thrust/test/catch_cuda_thrust')
 
 @task
 def warm(branch='master'):
@@ -25,8 +26,9 @@ def warm(branch='master'):
         with prefix(env.modules):
             run('cmake ..')
             run('make')
-            run('test/catch')
-
+            run('simple_mpi/test/catch_simple_mpi')
+            run('cuda_thrust/test/catch_cuda_thrust')
+            
 @task
 def patch():
   with cd(env.deploy_to+'/Turing-Fabric-Scaffold'):
@@ -39,4 +41,5 @@ def patch():
             with prefix(env.modules):
                 run('cmake ..')
                 run('make')
-                run('test/catch')
+                run('simple_mpi/test/catch_simple_mpi')
+                run('cuda_thrust/test/catch_cuda_thrust')

@@ -8,4 +8,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MPI_C_COMPILE_FLAGS}")
 include_directories(lib)
 
 add_subdirectory(simple_mpi)
-add_subdirectory(cuda_thrust)
+
+find_package(CUDA)
+
+if(CUDA_FOUND)
+  add_subdirectory(cuda_thrust)
+endif()
