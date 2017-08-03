@@ -5,7 +5,7 @@ import time
 import os
 
 @task
-def sub(processes=1, to_exec='simple_mpi'):
+def sub(processes=1, to_exec='simple_mpi', sudo=False):
     env.processes=processes
     env.to_exec=to_exec
     with open(env.template_file_path) as template:
@@ -14,7 +14,10 @@ def sub(processes=1, to_exec='simple_mpi'):
             script_file.write(script)
     with cd(env.deploy_to):
         put(env.script_local_path,'example.sh')
-        run('sbatch example.sh')
+        if sudo:
+            sudo('sbatch example.sh') # Workaround for crazy setup
+        else:
+            run('sbatch example.sh')
 
 @task
 def stat():
