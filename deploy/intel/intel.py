@@ -14,3 +14,4 @@ def intel():
     env.script_local_path=os.path.join(os.path.dirname(__file__),'intel.sh')
     env.sub='squeue'
     env.stat='sbatch'
+    env.modules='export PATH=$PATH:/home/hut23/libraries/cmake-3.8.2/bin'
