@@ -15,18 +15,18 @@ def sub(processes=1, to_exec='simple_mpi', sudo=False):
     with cd(env.deploy_to):
         put(env.script_local_path,'example.sh')
         if sudo:
-            sudo('sbatch example.sh') # Workaround for crazy setup
+            sudo(env.sub+'example.sh') # Workaround for crazy setup
         else:
-            run('sbatch example.sh')
+            run(env.sub+'example.sh')
 
 @task
 def stat():
-    run('squeue')
+    run(env.stat)
 
 @task
 def wait():
   """Wait until all jobs currently qsubbed are complete, then return"""
-  while "job-ID" in run('squeue'):
+  while "job-ID" in run(env.stat):
       time.sleep(10)
 
 @task
