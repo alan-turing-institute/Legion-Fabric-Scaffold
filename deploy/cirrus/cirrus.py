@@ -11,8 +11,8 @@ env.clone_url="https://github.com/alan-turing-institute/Turing-Fabric-Scaffold.g
 env.hosts=['login.cirrus.ac.uk']
 env.modules="module load intel-mpi-17 cmake-3.7.1-intel-17.0.2-vhhhji6"
 
-env.template_file_path=os.path.join(os.path.dirname(__file__),'intel.sh.mko')
-env.script_local_path=os.path.join(os.path.dirname(__file__),'intel.sh')
+env.template_file_path=os.path.join(os.path.dirname(__file__),'cirrus.sh.mko')
+env.script_local_path=os.path.join(os.path.dirname(__file__),'cirrus.sh')
 
 from ..builder.build import *
 from ..pbs.pbs import *

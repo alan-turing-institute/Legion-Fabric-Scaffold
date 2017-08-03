@@ -1,7 +1,21 @@
-#!/bin/bash -l
-#SBATCH -t 0:0:30
-#SBATCH --job-name MPIExample
-#SBATCH -N ${processes}
-#SBATCH --workdir ${run_at}
+#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -N MPIExample
+#PBS -l select=${nodes}:ncpus=72
+# Parallel jobs should always specify exclusive node access
+#PBS -l place=excl
+#PBS -l walltime=0:0:30
+#PBS -e ${run_at}/mypath/$$PBS_JOBID.txt
+#PBS -o /mypath/output.txt
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A ${project}
+
+# Change to the directory that the job was submitted from
+#PBS -o ${run_at}
+#PBS -e ${run_at}
+cd ${run_at}
+
 ${modules}
-time mpirun -n ${processes} ${deploy_to}/Turing-Fabric-Scaffold/build/${to_exec}/src/${to_exec}
+time mpirun -n ${processes} -ppn 36 ${deploy_to}/Turing-Fabric-Scaffold/build/${to_exec}/src/${to_exec}
